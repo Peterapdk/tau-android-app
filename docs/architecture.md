@@ -18,3 +18,4 @@ The Android application connects to the OMP/TAU instance running on **revi** via
 ## Android Implementation
 - **Ktor Client**: Configured for port 3001.
 - **Protocol**: Support for OMP-specific JSON-RPC or message frames.
+Verified connection to OMP gateway at 100.91.199.107:3001
