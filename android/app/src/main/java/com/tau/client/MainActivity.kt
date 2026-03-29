@@ -6,10 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tau.client.data.SettingsRepository
+import com.tau.client.network.ConnectionStatus
 import com.tau.client.network.TauGatewayClient
 import com.tau.client.ui.MainScreen
 import com.tau.client.ui.MainViewModel
@@ -29,11 +30,11 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             TAUAndroidAppTheme {
-                val status by viewModel.connectionStatus.collectAsStateWithLifecycle()
-                val host by viewModel.host.collectAsStateWithLifecycle()
-                val port by viewModel.port.collectAsStateWithLifecycle()
-                val token by viewModel.token.collectAsStateWithLifecycle()
-                val messages by viewModel.messages.collectAsStateWithLifecycle()
+                val status by viewModel.connectionStatus.collectAsState(ConnectionStatus.Disconnected)
+                val host by viewModel.host.collectAsState("")
+                val port by viewModel.port.collectAsState(3001)
+                val token by viewModel.token.collectAsState("")
+                val messages by viewModel.messages.collectAsState(emptyList())
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),

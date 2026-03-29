@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tau.client.network.ConnectionStatus
 
-@OptIn(Material3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     connectionStatus: ConnectionStatus,
@@ -85,7 +85,7 @@ fun MainScreen(
             ) {
                 items(messages) { msg ->
                     Text(msg, style = MaterialTheme.typography.bodySmall)
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                    Divider(modifier = Modifier.padding(vertical = 4.dp))
                 }
             }
 
