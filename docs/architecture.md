@@ -1,25 +1,20 @@
-# Architecture: Android to TAU Connectivity
+# Architecture: Android to OMP/TAU Connectivity
 
 ## Overview
-The Android application will connect to the TAU instance running on **revi** via Tailscale. TAU (running via OpenClaw) typically exposes a WebSocket gateway for RPC and event streaming.
+The Android application connects to the OMP/TAU instance running on **revi** via Tailscale. This setup uses the OMP-integrated TAU gateway.
 
 ## Connection Details
 - **Target Host (Tailscale IP)**: `100.91.199.107`
-- **Port**: `18789` (Standard OpenClaw/TAU port)
-- **Protocol**: WebSocket (wss:// or ws://)
-- **Auth**: Token-based (as configured in `openclaw.json`)
+- **Port**: `3001` (OMP Gateway Port)
+- **Base URL**: `http://100.91.199.107:3001/`
+- **Protocol**: HTTP / WebSocket (wss:// or ws://)
 
 ## Protocol Stack
-1. **Physical/Network**: Tailscale VPN (Direct peer-to-peer)
+1. **Network**: Tailscale VPN
 2. **Transport**: TCP
-3. **Session**: WebSocket
-4. **Application**: OpenClaw RPC / Event Protocol
+3. **Session**: HTTP/WebSocket
+4. **Application**: OMP RPC Protocol
 
-## Gateway Configuration Requirements
-The TAU gateway on **revi** must be configured to bind to `0.0.0.0` or the Tailscale interface specifically, instead of `loopback (127.0.0.1)`, to allow external connections from the Android device.
-
-## Android Implementation Strategy
-- **Language**: Kotlin
-- **Framework**: Jetpack Compose
-- **Networking**: OkHttp + Scarlet (for WebSockets) or Ktor-Client
-- **Connectivity**: Check for Tailscale active status before attempting connection.
+## Android Implementation
+- **Ktor Client**: Configured for port 3001.
+- **Protocol**: Support for OMP-specific JSON-RPC or message frames.

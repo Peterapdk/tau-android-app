@@ -13,22 +13,22 @@ class MainViewModel(
 ) : ViewModel() {
 
     val connectionStatus = client.connectionState
-    val host = repository.tauHost.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "")
-    val token = repository.tauToken.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "")
+    val host = repository.tauHost.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "100.91.199.107")
+    val port = repository.tauPort.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 3001)
+    val token = repository.tauToken.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "fjrtsale-secure-2026")
 
     private val _messages = MutableStateFlow<List<String>>(emptyList())
     val messages: StateFlow<List<String>> = _messages
 
-    fun connect(host: String, token: String) {
+    fun connect(host: String, port: Int, token: String) {
         viewModelScope.launch {
-            repository.saveSettings(host, token)
-            client.connect(host, token = token)
+            repository.saveSettings(host, port, token)
+            client.connect(host, port, token = token)
         }
     }
 
     fun sendMessage(content: String) {
-        // Implementation for sending via client
         _messages.value += "You: $content"
-        // client.send(content)
+        // TODO: client.send(content)
     }
 }

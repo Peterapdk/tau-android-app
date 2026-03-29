@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,7 +21,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Manual DI for bootstrap phase
+        // Manual DI
         val repository = SettingsRepository(applicationContext)
         val httpClient = HttpClient { install(WebSockets) }
         val gatewayClient = TauGatewayClient(httpClient)
@@ -32,6 +31,7 @@ class MainActivity : ComponentActivity() {
             TAUAndroidAppTheme {
                 val status by viewModel.connectionStatus.collectAsStateWithLifecycle()
                 val host by viewModel.host.collectAsStateWithLifecycle()
+                val port by viewModel.port.collectAsStateWithLifecycle()
                 val token by viewModel.token.collectAsStateWithLifecycle()
                 val messages by viewModel.messages.collectAsStateWithLifecycle()
 
@@ -42,9 +42,10 @@ class MainActivity : ComponentActivity() {
                     MainScreen(
                         connectionStatus = status,
                         host = host,
+                        port = port,
                         token = token,
                         messages = messages,
-                        onConnect = { h, t -> viewModel.connect(h, t) },
+                        onConnect = { h, p, t -> viewModel.connect(h, p, t) },
                         onSendMessage = { m -> viewModel.sendMessage(m) }
                     )
                 }
